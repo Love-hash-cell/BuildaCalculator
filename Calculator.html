@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Simple Calculator</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            margin: 0;
+        }
+        .calculator {
+            background: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            overflow: hidden;
+            width: 320px;
+        }
+        .display {
+            background: #222;
+            color: #0f0;
+            font-size: 36px;
+            text-align: right;
+            padding: 20px;
+            height: 80px;
+        }
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-gap: 1px;
+        }
+        button {
+            font-size: 24px;
+            padding: 20px;
+            border: none;
+            background: #f1f1f1;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #ddd;
+        }
+        .operator {
+            background: #ff9500;
+            color: white;
+        }
+        .operator:hover {
+            background: #e08e00;
+        }
+        .equals {
+            background: #34c759;
+            color: white;
+            grid-column: span 2;
+        }
+        .equals:hover {
+            background: #28a745;
+        }
+        .clear {
+            background: #ff3b30;
+            color: white;
+        }
+        .clear:hover {
+            background: #d93025;
+        }
+    </style>
+</head>
+<body>
+
+<div class="calculator">
+    <div class="display" id="display">0</div>
+    <div class="buttons">
+        <button class="clear" onclick="clearDisplay()">C</button>
+        <button onclick="appendValue('(')">(</button>
+        <button onclick="appendValue(')')">)</button>
+        <button class="operator" onclick="appendValue('/')">÷</button>
+
+        <button onclick="appendValue('7')">7</button>
+        <button onclick="appendValue('8')">8</button>
+        <button onclick="appendValue('9')">9</button>
+        <button class="operator" onclick="appendValue('*')">×</button>
+
+        <button onclick="appendValue('4')">4</button>
+        <button onclick="appendValue('5')">5</button>
+        <button onclick="appendValue('6')">6</button>
+        <button class="operator" onclick="appendValue('-')">−</button>
+
+        <button onclick="appendValue('1')">1</button>
+        <button onclick="appendValue('2')">2</button>
+        <button onclick="appendValue('3')">3</button>
+        <button class="operator" onclick="appendValue('+')">+</button>
+
+        <button onclick="appendValue('0')">0</button>
+        <button onclick="appendValue('.')">.</button>
+        <button class="equals" onclick="calculate()">=</button>
+    </div>
+</div>
+
+<script>
+    const display = document.getElementById('display');
+
+    function appendValue(value) {
+        if (display.innerText === '0') {
+            display.innerText = value;
+        } else {
+            display.innerText += value;
+        }
+    }
+
+    function clearDisplay() {
+        display.innerText = '0';
+    }
+
+    function calculate() {
+        try {
+            display.innerText = eval(display.innerText.replace(/÷/g, '/').replace(/×/g, '*'));
+        } catch (error) {
+            display.innerText = 'Error';
+        }
+    }
+
+    // Bonus: Keyboard Support
+    document.addEventListener('keydown', function(event) {
+        const key = event.key;
+        if (!isNaN(key) || "+-*/().".includes(key)) {
+            appendValue(key);
+        } else if (key === 'Enter') {
+            calculate();
+        } else if (key === 'Backspace') {
+            display.innerText = display.innerText.slice(0, -1) || '0';
+        } else if (key.toLowerCase() === 'c') {
+            clearDisplay();
+        }
+    });
+</script>
+
+</body>
+</html>
